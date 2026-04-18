@@ -1,0 +1,11 @@
+# Ignore all lecture-note assets under L6 by default
+L6/*
+
+# Keep only the Julia scripts in L6 tracked
+!L6/*.jl
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# VS Code workspace noise
+.vscode/
