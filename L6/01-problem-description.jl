@@ -127,12 +127,36 @@ function α_backtracking(m, Δm, ∇Φᵢ, t, d, σd, mref, ϵ2)
     return α
 end
 
+format_number(value) = @sprintf("%.3f", value)
+
+function format_vector(values)
+    return "[" * join([@sprintf("%.3f", value) for value in values], ", ") * "]"
+end
+
 function print_summary(mtrue, m0, mref, σd, ϵ2)
-    println("True model     : ", mtrue)
-    println("Starting model : ", m0)
-    println("Reference model: ", mref)
-    println("σd             : ", σd)
-    println("ϵ²             : ", ϵ2)
+    println("True model     : ", format_vector(mtrue))
+    println("Starting model : ", format_vector(m0))
+    println("Reference model: ", format_vector(mref))
+    println("σd             : ", format_number(σd))
+    println("ϵ²             : ", @sprintf("%.3e", ϵ2))
+    println()
+end
+
+function print_model_table(mtrue, m0, mref, mest)
+    println("Model summary")
+    println("parameter\ttrue\tstart\tprior\testimated")
+    for i in eachindex(mtrue)
+        @printf("%d\t%.3f\t%.3f\t%.3f\t%.3f\n", i, mtrue[i], m0[i], mref[i], mest[i])
+    end
+    println()
+end
+
+function print_data_table(t, d, dpred)
+    println("Data comparison")
+    println("sample\tt\td_obs\td_pred(mest)")
+    for i in eachindex(d)
+        @printf("%d\t%.3f\t%.3f\t%.3f\n", i, t[i], d[i], dpred[i])
+    end
     println()
 end
 

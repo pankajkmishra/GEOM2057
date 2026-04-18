@@ -14,7 +14,14 @@ function solve_gauss_newton(case)
     for i in 0:(case.maxiter - 1)
         ∇Φᵢ = ∇Φ(m, case.t, case.d, case.σd, case.mref, case.ϵ2)
         push!(∇Φ_history, norm(∇Φᵢ))
-        @printf("iter=%02d | Φ=%.6e | ||∇Φ||=%.6e | m=%s\n", i, Φ_history[end], norm(∇Φᵢ), string(m))
+        @printf(
+            "iter=%02d | Φ=%.3f | Φd=%.3f | Φm=%.3f | m=%s\n",
+            i,
+            Φ_history[end],
+            Φd(m, case.t, case.d, case.σd),
+            Φm(m, case.mref),
+            format_vector(m),
+        )
 
         if norm(∇Φᵢ) < case.gtol
             println("Converged in $(i) Gauss-Newton iterations.")
@@ -37,15 +44,18 @@ function main()
     describe_problem()
     print_summary(case.mtrue, case.m0, case.mref, case.σd, case.ϵ2)
     mest, Φ_history, ∇Φ_history = solve_gauss_newton(case)
+    dpred = gg(mest, case.t)
 
     println()
     println("Final Gauss-Newton estimate")
     println("-" ^ 72)
-    println("mest         = ", mest)
-    println("Φd(mest)     = ", Φd(mest, case.t, case.d, case.σd))
-    println("Φm(mest)     = ", Φm(mest, case.mref))
-    println("Φ(mest)      = ", Φ(mest, case.t, case.d, case.σd, case.mref, case.ϵ2))
+    println("mest         = ", format_vector(mest))
+    println("Φd(mest)     = ", @sprintf("%.3f", Φd(mest, case.t, case.d, case.σd)))
+    println("Φm(mest)     = ", @sprintf("%.3f", Φm(mest, case.mref)))
+    println("Φ(mest)      = ", @sprintf("%.3f", Φ(mest, case.t, case.d, case.σd, case.mref, case.ϵ2)))
     println("Iterations    = ", length(∇Φ_history) - (last(∇Φ_history) < case.gtol ? 1 : 0))
+    println()
+    print_data_table(case.t, case.d, dpred)
 end
 
 main()

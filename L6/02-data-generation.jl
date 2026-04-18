@@ -2,6 +2,11 @@
 # Script 02: Data Generation
 # ================================================================
 
+if !@isdefined(gg)
+    include("01-problem-description.jl")
+end
+
+using Printf
 using Random
 
 function generate_synthetic_geophysical_case()
@@ -32,4 +37,24 @@ function generate_synthetic_geophysical_case()
         maxiter = maxiter,
         gtol = gtol,
     )
+end
+
+function main()
+    case = generate_synthetic_geophysical_case()
+
+    println("Synthetic data generation")
+    println("=" ^ 72)
+    print_summary(case.mtrue, case.m0, case.mref, case.σd, case.ϵ2)
+    println("Number of samples : ", length(case.t))
+    println("Time range        : ", format_number(first(case.t)), " to ", format_number(last(case.t)))
+    println()
+    println("Observed data")
+    println("sample\tt\td_obs")
+    for i in eachindex(case.d)
+        @printf("%d\t%.3f\t%.3f\n", i, case.t[i], case.d[i])
+    end
+end
+
+if abspath(PROGRAM_FILE) == @__FILE__
+    main()
 end
