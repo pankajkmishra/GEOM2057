@@ -1,7 +1,10 @@
 # Ignore all lecture-note assets under L6 by default
 L6/*
 
-# Keep only the Julia scripts in L6 tracked
+# Keep lecture sources and code in L6 tracked
+!L6/L6.tex
+!L6/L6.pdf
+!L6/UFTheme.sty
 !L6/*.jl
 
 # Jupyter checkpoints

@@ -58,7 +58,7 @@ clamp_model(model, lower, upper) = min.(max.(model, lower), upper)
 
 function gg_hard(m::Vector{Float64}, t::Vector{Float64})
     m1, m2, m3 = m
-    return m1 .* exp.(-(t ./ m2) .^ 2) .+ m3
+    return m1 .* exp.(-(t ./ m2) .^ 2) .+ m3 # note the square in the exponential, in earlier problem it was exp(-(t/m2)) 
 end
 
 function G_hard(m::Vector{Float64}, t::Vector{Float64})
