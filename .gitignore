@@ -1,10 +1,19 @@
-# Ignore all lecture-note assets under L6 by default
-L6/*
-
-# Keep lecture sources and code in L6 tracked
-!L6/L6.tex
-!L6/L6.pdf
-!L6/*.jl
+# Ignore LaTeX source and build artefacts, but keep PDFs
+*.tex
+*.sty
+*.cls
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.eps
 
 # Jupyter checkpoints
 .ipynb_checkpoints/

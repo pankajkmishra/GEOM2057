@@ -1,6 +1,6 @@
 # GEOM2057 Lectures 6 and 7
 
-This repository contains the Julia teaching scripts, lecture sources, and supporting assets for the second part of the GEOM2057 course, centred on Lectures 6 and 7.
+This repository contains the Julia teaching scripts, lecture PDFs, and supporting assets for the second part of the GEOM2057 course, centred on Lectures 6 and 7.
 
 ## Topics Covered in the Second Part
 
@@ -49,7 +49,7 @@ Lecture 7 includes:
 - `L7/03-markov-chain-demo.jl`: simple Markov chain demonstration.
 - `L7/04-metropolis-hastings-geophysical.jl`: MCMC demonstration on a geophysical inverse problem.
 - `L7/05-inr-geophysical-inversion.jl`: high-level implicit neural representation inversion example.
-- `L7/L7.tex`: Lecture 7 slide source.
+- `L7/L7.pdf`: Lecture 7 slides.
 - `L7/Figures/`: generated lecture figures and supporting images.
 
 ## Getting Started with Julia
