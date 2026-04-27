@@ -1,0 +1,92 @@
+% ------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------
+\usepackage{tikz}                 % drawing / overlays
+\usepackage[english]{babel}       % language settings
+\usepackage[utf8x]{inputenc}      % UTF-8 input (utf8x is from ucs; can be finicky)
+\usepackage{graphicx}             % \includegraphics
+\usepackage{float}                % improved float placement (H)
+\usepackage{amsmath,amssymb}      % math environments and symbols
+
+% ------------------------------------------------------------
+% Fonts
+% ------------------------------------------------------------
+\usepackage[T1]{fontenc}          % T1 output encoding (better hyphenation, accented chars)
+\usepackage[sfdefault]{AlegreyaSans} % set Alegreya Sans as default sans-serif font
+\renewcommand*\oldstylenums[1]{{\AlegreyaSansOsF #1}} % oldstyle numerals for AlegreyaSans
+
+% ------------------------------------------------------------
+% Colors (defined once, used throughout)
+% ------------------------------------------------------------
+\definecolor{UFblue}{RGB}{0,33,165}      % UF blue
+\definecolor{UForange}{RGB}{255,0,127}   % pink/magenta-ish (name says orange, RGB is magenta)
+
+% ------------------------------------------------------------
+% Beamer theme + color configuration
+% ------------------------------------------------------------
+
+% Title on the title page / some title contexts
+\setbeamercolor{title}{fg=UFblue}
+
+% Frame title (top of each slide). THIS is what makes it magenta.
+\setbeamercolor{frametitle}{fg=UFblue}
+
+% "structure" controls the default color of structural elements
+% (bullets, section headings, itemize symbols, etc.)
+\usecolortheme[named=UFblue]{structure}
+
+\mode<presentation>{
+  \usetheme[compress]{Dresden} % Dresden theme, compress navigation
+  % thin line above the headline area
+  \setbeamercolor{upper separation line head}{bg=UFblue}
+}
+
+% Outer theme that creates the navigation "miniframes" in the header
+\useoutertheme{miniframes}
+
+% Color used by the header/foot navigation elements
+% (this sets both parent and fg; parent=UFblue is unusual but works if UFblue is defined)
+\setbeamercolor{section in head/foot}{parent=UFblue, fg=UFblue}
+
+% ------------------------------------------------------------
+% Custom headline template (miniframes without subsections)
+% ------------------------------------------------------------
+\defbeamertemplate*{headline}{miniframes theme no subsection}{%
+  % top separator line
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+  \end{beamercolorbox}
+
+  % navigation bar with section "miniframes"
+  \begin{beamercolorbox}{section in head/foot}
+    \vskip2pt
+    \insertnavigation{\paperwidth}
+    \vskip2pt
+  \end{beamercolorbox}%
+
+  % bottom separator line (color not explicitly set here; uses beamer default unless set)
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+  \end{beamercolorbox}
+}
+
+% ------------------------------------------------------------
+% Remove footer navigation and icons
+% ------------------------------------------------------------
+
+% replace footline with only the page number (then you set it empty below)
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.25ex]{page number in head/foot}
+    \usebeamerfont{page number in head/foot}
+    \hfill Inversion of Geophysical Data | University of Helsinki | Spring 2026 \hfill \insertframenumber\kern1em
+  \end{beamercolorbox}
+}
+
+
+% remove navigation symbols (the little icons)
+\setbeamertemplate{navigation symbols}{}
+
+% If you want *no* footline at all, keep this (currently you have page number template,
+% but footline content will be empty if you set it to empty elsewhere).
+% \setbeamertemplate{footline}{}
+
+% If you want to remove frame titles entirely, you'd uncomment this:
+% \setbeamertemplate{frametitle}{}

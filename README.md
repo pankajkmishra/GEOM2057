@@ -1,8 +1,36 @@
-# GEOM2057 Lecture 6
+# GEOM2057 Lectures 6 and 7
 
-This repository keeps only the Julia teaching scripts and the README tracked for Lecture 6.
+This repository contains the Julia teaching scripts, lecture sources, and supporting assets for the second part of the GEOM2057 course, centred on Lectures 6 and 7.
 
-The repository currently includes:
+## Topics Covered in the Second Part
+
+Lecture 6 focuses on deterministic inversion and optimisation:
+
+- Problem setup for a non-linear inverse problem.
+- Synthetic data generation.
+- Newton method inversion.
+- Gauss-Newton inversion.
+- A harder non-linear comparison case.
+- Local versus global search behaviour.
+- Particle Swarm Optimisation (PSO).
+- Very Fast Simulated Annealing (VFSA).
+
+Lecture 7 focuses on uncertainty and Bayesian inversion:
+
+- Probability review and probability density functions.
+- Joint, marginal, and conditional probability.
+- Bayes' rule and posterior probability.
+- Grid-search Bayesian inversion.
+- Monte Carlo sampling.
+- Markov chains.
+- Metropolis-Hastings MCMC.
+- Reading traces, marginals, and predictive uncertainty.
+- Geophysical inversion examples.
+- Implicit neural representations and future directions.
+
+## Repository Contents
+
+Lecture 6 includes:
 
 - `L6/01-problem-setup-derivatives-etc.jl`: shared definitions and derivatives for the baseline non-linear inverse problem.
 - `L6/02-data-generation.jl`: synthetic data generation for the baseline inverse problem.
@@ -14,9 +42,19 @@ The repository currently includes:
 - `L6/08-inversion-PSO-hard.jl`: Particle Swarm Optimisation on the hard comparison case.
 - `L6/09-inversion-VFSA-hard.jl`: Very Fast Simulated Annealing on the hard comparison case.
 
+Lecture 7 includes:
+
+- `L7/01-probability-review.jl`: introductory probability and PDF concepts for the lecture.
+- `L7/02-bayesian-grid-search.jl`: grid-based Bayesian inversion demonstration.
+- `L7/03-markov-chain-demo.jl`: simple Markov chain demonstration.
+- `L7/04-metropolis-hastings-geophysical.jl`: MCMC demonstration on a geophysical inverse problem.
+- `L7/05-inr-geophysical-inversion.jl`: high-level implicit neural representation inversion example.
+- `L7/L7.tex`: Lecture 7 slide source.
+- `L7/Figures/`: generated lecture figures and supporting images.
+
 ## Getting Started with Julia
 
-These Julia scripts only use Julia standard libraries such as `LinearAlgebra`, `Printf`, and `Random`, so you do not need to install extra Julia packages to run the `.jl` files.
+The Julia scripts in Lecture 6 only use Julia standard libraries such as `LinearAlgebra`, `Printf`, and `Random`, so you do not need to install extra Julia packages to run the `.jl` files. Lecture 7 examples may additionally rely on plotting packages already set up in the teaching environment.
 
 ### 1. Install Julia
 
@@ -37,11 +75,13 @@ If that command is not found, restart VS Code or add Julia to your system `PATH`
 From VS Code or a terminal, work inside:
 
 ```text
-GEOM2057/L6
+GEOM2057
 ```
 
 
 ### 3. Run the Julia scripts
+
+For Lecture 6, move into `GEOM2057/L6` and run the scripts below.
 
 Run the baseline problem setup:
 
@@ -91,7 +131,15 @@ Run the hard-case VFSA global-optimisation example:
 julia .\09-inversion-VFSA-hard.jl
 ```
 
-Each script prints the iteration history and final inversion result in the terminal.
+For Lecture 7, move into `GEOM2057/L7` and run the lecture demos or compile the slides as needed.
+
+Example:
+
+```powershell
+julia .\04-metropolis-hastings-geophysical.jl
+```
+
+Each script prints the main intermediate or final results in the terminal.
 
 ## Suggested Workflow for Students
 
@@ -100,3 +148,4 @@ Each script prints the iteration history and final inversion result in the termi
 3. Run `04-inversion-GaussNewton.jl` and compare it against Newton's method.
 4. Run `05-problem-setup-hard.jl` and `06-data-generation-hard.jl` to inspect the shared hard case and the noisy observations used by all three comparison methods.
 5. Run `07-inversion-GaussNewton-hard.jl`, `08-inversion-PSO-hard.jl`, and `09-inversion-VFSA-hard.jl` to compare local and global search on the same hard inverse problem.
+6. Move to `L7` to review the probability, Bayesian inversion, Markov chain, MCMC, and INR examples that build the uncertainty-analysis part of the course.

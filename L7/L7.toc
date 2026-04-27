@@ -1,0 +1,7 @@
+\babel@toc {english}{}\relax 
+\beamer@sectionintoc {1}{Probability Essentials}{7}{0}{1}
+\beamer@sectionintoc {2}{Bayesian Inversion}{17}{0}{2}
+\beamer@sectionintoc {3}{Markov Chains}{26}{0}{3}
+\beamer@sectionintoc {4}{Metropolis--Hastings}{29}{0}{4}
+\beamer@sectionintoc {5}{Implicit Neural Representations}{40}{0}{5}
+\beamer@sectionintoc {6}{Conclusions}{42}{0}{6}

@@ -1,0 +1,49 @@
+\usepackage{tikz}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath,amssymb}
+
+
+% Logo at frontpage -------------------
+%\titlegraphic{\includegraphics[scale=0.15]{fig/logo.jpg}}
+% Logo at frontpage -------------------
+
+% fonts ----------------
+\usepackage[T1]{fontenc}
+\usepackage[sfdefault]{AlegreyaSans} 
+\renewcommand*\oldstylenums[1]{{\AlegreyaSansOsF #1}}
+% set COLORS -----------------------------
+\definecolor{UFblue}{RGB}{0,33,165} % UF BLUE
+\definecolor{UForange}{RGB}{255,0,127} % UF ORANGE
+%\useoutertheme[subsection=false]{miniframes} %eliminate subsection header by each slide
+\setbeamercolor{title}{fg=UFblue}
+\setbeamercolor{frametitle}{fg=UForange}
+\usecolortheme[named=UFblue]{structure}
+\mode<presentation>
+{
+  \usetheme[compress]{Dresden}
+\setbeamercolor{upper separation line head}{bg=UFblue}
+
+} 
+\useoutertheme{miniframes} %colors healine
+\setbeamercolor{section in head/foot}{parent=UFblue, fg=UFblue}
+
+\defbeamertemplate*{headline}{miniframes theme no subsection}
+{%
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}{section in head/foot}
+    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+  \end{beamercolorbox}
+}
+% set COLORS -----------------------------
+
+%gets rid of bottom navigation bars
+\setbeamertemplate{footline}[page number]{}
+%gets rid of navigation symbols
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{frametitle}{}

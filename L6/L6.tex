@@ -97,17 +97,15 @@
 By the end of this lecture, the aim is to understand:
 
 \begin{itemize}
-    \item[--] recap the main ideas from the previous lecture: forward modelling, inverse problems, objective functions, and regularization,
-    \item[--] connect those ideas to \alert{hands-on deterministic inversion} with Newton and Gauss--Newton,
-    \item[--] understand the difference between \alert{local} search and \alert{global} search in non-linear inverse problems,
-    \item[--] see why \alert{stochastic inversion} is a useful global option when the objective surface is complicated,
-    \item[--] learn the basic idea of \alert{PSO}, inspired by flocking birds and collective motion,
-    \item[--] learn the basic idea of annealing-based search, including \alert{VFSA}, inspired by how heated metals are cooled toward low-energy states,
-    \item[--] understand why uncertainty matters and how model ensembles help us think beyond one single best model.
+    \item[--] what makes a geophysical inverse problem non-linear,
+    \item[--] why local methods such as Newton and Gauss--Newton work and where they can fail,
+    \item[--] why global and stochastic search methods are useful when the objective surface is complicated,
+    \item[--] the basic ideas behind PSO, simulated annealing, and VFSA,
+    \item[--] why uncertainty matters and how model ensembles help us think about it.
 \end{itemize}
 
 \begin{alertblock}{Intuitive goal}
-The main objective is to move from a \alert{recap of local inversion} toward \alert{global search, stochastic exploration, and uncertainty} in inverse problems.
+The main objective is to move from \alert{one best model} to \alert{thinking about search, ambiguity, and uncertainty} in inverse problems.
 \end{alertblock}
 \end{frame}
 
@@ -527,59 +525,31 @@ We now want methods that \alert{explore the search space more broadly}, rather t
 
 % ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
 \begin{frame}{Local minimum versus global minimum}
-\centering
-\begin{tikzpicture}[x=1cm,y=1cm,scale=0.67,transform shape,line cap=round,line join=round]
-    % Top row: broad rough landscape with explicit minima
-    \begin{scope}[shift={(0.3,3.5)}]
-        \draw[UFdarkblue, line width=0.95pt]
-            (0.8,2.7)
-            .. controls (1.8,2.9) and (2.1,2.2) .. (1.7,1.6)
-            .. controls (1.4,1.2) and (2.6,2.0) .. (3.0,1.8)
-            .. controls (3.4,1.5) and (3.1,0.6) .. (4.0,0.45)
-            .. controls (5.1,0.25) and (5.9,1.2) .. (6.6,3.0)
-            .. controls (7.1,3.9) and (7.8,3.5) .. (8.3,1.5)
-            .. controls (8.6,0.4) and (9.3,-0.15) .. (10.1,0.05)
-            .. controls (11.0,0.3) and (11.6,1.8) .. (12.5,1.85)
-            .. controls (13.2,1.9) and (13.6,0.9) .. (14.2,0.8);
+\small
 
-        \fill[red!85] (4.0,0.45) circle (0.09);
-        \fill[red!85] (10.1,0.05) circle (0.09);
+Let $\mathcal{M}$ denote the admissible model set.
 
-        \draw[->, line width=0.45pt] (3.0,0.1) -- (3.82,0.42);
-        \node[blue!75!black, font=\fontsize{9}{10}\selectfont] at (2.0,-0.15) {local minimum};
+\begin{block}{Local minimum}
+\[
+\mm^\star \text{ is a local minimum if } \exists\,r>0 \text{ such that }
+\Phi(\mm^\star) \leq \Phi(\mm)
+\quad \forall\, \mm \in \mathcal{M}\cap B_r(\mm^\star).
+\]
+\end{block}
 
-        \draw[->, line width=0.45pt] (11.4,-0.45) -- (10.22,0.02);
-        \node[red!80!black, font=\fontsize{9}{10}\selectfont] at (12.0,-0.7) {global minimum};
+\begin{block}{Global minimum}
+\[
+\mm_{\mathrm{glob}} \text{ is a global minimum if }
+\Phi(\mm_{\mathrm{glob}}) \leq \Phi(\mm)
+\quad \forall\, \mm \in \mathcal{M}.
+\]
+\end{block}
 
-        \node[font=\fontsize{12}{13}\selectfont] at (7.4,-1.15) {Problem for this class};
-        \node[red!85!black, align=center, text width=6.2cm, font=\fontsize{10}{11}\selectfont] at (7.4,-1.8) {We need an optimizer\\that can jump over local minima};
-    \end{scope}
-
-    % Bottom row: simple 1-D schematic
-    \begin{scope}[shift={(3.1,-0.15)}]
-        \draw[black, line width=1.1pt]
-            (8.8,4.5)
-            .. controls (9.15,3.15) and (9.8,1.25) .. (10.75,0.98)
-            .. controls (11.45,0.84) and (12.45,0.84) .. (13.55,1.08)
-            .. controls (14.15,2.15) and (14.85,3.3) .. (15.9,3.58)
-            .. controls (16.7,3.78) and (17.65,3.02) .. (18.15,2.28)
-            .. controls (18.55,1.62) and (18.88,1.48) .. (19.18,1.62)
-            .. controls (19.45,1.76) and (19.65,1.94) .. (19.8,2.0);
-
-        \foreach \x/\y in {10.92/0.96,11.27/0.95,11.62/0.95,11.97/0.95,12.32/0.95,12.67/0.95,13.02/0.96,13.37/0.99} {
-            \fill[red!85] (\x,\y) circle (0.08);
-        }
-        \fill[red!85] (18.93,1.53) circle (0.08);
-
-        \draw[->, line width=0.45pt] (14.05,0.35) -- (13.18,0.98);
-        \node[red!80!black, font=\fontsize{10}{11}\selectfont] at (12.15,-0.02) {global minimum};
-
-        \draw[->, line width=0.45pt] (18.35,1.0) -- (18.9,1.5);
-        \node[blue!75!black, font=\fontsize{9}{10}\selectfont] at (16.85,1.4) {local minimum};
-
-        \node[font=\fontsize{12}{13}\selectfont] at (16.0,-0.35) {Problem for next class};
-    \end{scope}
-\end{tikzpicture}
+\begin{itemize}
+    \item[--] A local minimum is best only within a neighborhood.
+    \item[--] A global minimum is best over the whole domain.
+    \item[--] Global optimisation methods are designed to reduce the chance of getting trapped in a poor local minimum.
+\end{itemize}
 \end{frame}
 
 % ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
@@ -651,8 +621,8 @@ The cost grows as $|\mathcal{G}|=\prod_{j=1}^M K_j$, so grid search is excellent
 \begin{itemize}
     \item[--] \alert{PSO}
     \item[--] Genetic algorithms
-    \item[--] Ant colony optimization
-    \item[--] Many others inspired by natural processes
+    \item[--] Differential evolution
+    \item[--] CMA-ES
 \end{itemize}
 These methods evolve a \alert{population of candidate models}.
 \end{block}
@@ -847,10 +817,9 @@ The PSO demo is in the repository
 
 \begin{block}{Main files}
 \begin{itemize}
-    \item[--] \texttt{L6/05-problem-setup-hard.jl}: shared hard-problem setup for the comparison case.
-    \item[--] \texttt{L6/06-data-generation-hard.jl}: shared noisy data generation for the comparison case.
-    \item[--] \texttt{L6/07-inversion-GaussNewton-hard.jl}: local Gauss--Newton comparison on the hard case.
-    \item[--] \texttt{L6/08-inversion-PSO-hard.jl}: difficult non-linear PSO demo.
+    \item[--] \texttt{L6/05-inverse-GaussNewton-difficult.jl}: local Gauss--Newton comparison on the same difficult case.
+    \item[--] \texttt{L6/06-data-generation-stochastic.jl}: sparse/noisy settings shared by the comparison scripts.
+    \item[--] \texttt{L6/07-inversion-PSO.jl}: difficult non-linear PSO demo.
 \end{itemize}
 \end{block}
 
@@ -1047,9 +1016,9 @@ The VFSA demo is in the repository
 
 \begin{block}{Main files}
 \begin{itemize}
-    \item[--] \texttt{L6/05-problem-setup-hard.jl}: shared hard-problem setup for the comparison case.
-    \item[--] \texttt{L6/06-data-generation-hard.jl}: shared noisy data generation for the comparison case.
-    \item[--] \texttt{L6/09-inversion-VFSA-hard.jl}: difficult non-linear VFSA demo.
+    \item[--] \texttt{L6/05-inverse-GaussNewton-difficult.jl}: local Gauss--Newton comparison on the same difficult case.
+    \item[--] \texttt{L6/06-data-generation-stochastic.jl}: sparse/noisy settings shared by the comparison scripts.
+    \item[--] \texttt{L6/08-inversion-VFSA.jl}: difficult non-linear VFSA demo.
 \end{itemize}
 \end{block}
 
